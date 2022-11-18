@@ -1,6 +1,7 @@
 package tool.util;
 
-import com.sun.source.doctree.SerialDataTree;
+import ch.qos.logback.classic.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 
@@ -15,5 +16,18 @@ public class LogUtil implements Serializable {
 
     private static final long serialVersionUID = 3497418501502482083L;
 
+    private static Logger logger;
+
+    public LogUtil() {
+        logger = (Logger) LoggerFactory.getLogger(LogUtil.class);
+    }
+
+    public LogUtil(Class<?> clazz) {
+        logger = (Logger) LoggerFactory.getLogger(clazz);
+    }
+
+    public <T> void var(String name, T value) {
+        logger.trace(String.format("var->%s=%s", name, value));
+    }
 
 }

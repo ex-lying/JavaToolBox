@@ -6,7 +6,7 @@
 
     <groupId>org.example</groupId>
     <artifactId>JavaToolBox</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.0</version>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
@@ -14,4 +14,46 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.2.3</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <!--<resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <excludes>
+                    <exclude>logback.xml</exclude>
+                </excludes>
+            </resource>
+        </resources>-->
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.22.1</version>
+            </plugin>
+        </plugins>
+    </build>
+
+    <!--<distributionManagement>
+        &lt;!&ndash;正式版本&ndash;&gt;
+        <repository>
+            &lt;!&ndash; 在settings.xml中<server>的id&ndash;&gt;
+            <id>rdc-releases</id>
+            <name>test</name>
+            <url>https://packages.aliyun.com/maven/repository/2245052-release-0EzaGw/</url>
+        </repository>
+
+        &lt;!&ndash;快照版本&ndash;&gt;
+        <snapshotRepository>
+            <id>rdc-snapshots</id>
+            <name>test</name>
+            <url>https://packages.aliyun.com/maven/repository/2245052-snapshot-NvIUNT/</url>
+        </snapshotRepository>
+    </distributionManagement>-->
 </project>
