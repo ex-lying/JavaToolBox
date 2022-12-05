@@ -1,0 +1,60 @@
+<!--http://logback.qos.ch/manual/appenders.html-->
+<configuration>
+    <!--set file(with suffix,suffix set by log key) output log config -->
+    <contextName>demo_for_logstash</contextName>
+    <property name="logPath" value="/" scope="CONTEXT"/>
+    <property name="maxFileSize" value="10" scope="CONTEXT"/>
+    <property name="maxHistory" value="30" scope="CONTEXT"/>
+    <property name="totalSizeCap" value="32" scope="CONTEXT"/>
+    <property name="pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5thread %-5level %logger --- %msg%n" scope="CONTEXT"/>
+    <property name="level" value="info" scope="CONTEXT"/>
+
+
+    <!--set file output log config-->
+    <appender name="MAIN" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>/error.log</file>
+        <append>true</append>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- daily rollover -->
+            <fileNamePattern>/error.%d{yyyy-MM-dd}-%i.log.zip</fileNamePattern>
+
+            <!-- each file should be at most 100MB, keep 30 days worth of history, but at most 3GB -->
+            <maxHistory>5</maxHistory>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>500MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5thread %-5level %logger --- %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!--ConsoleAppender 指定往控制台打印的日志-->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <!--定义了一个过滤器,在LEVEL之下的日志输出不会被打印出来-->
+        <!--这里定义了DEBUG，也就是控制台不会输出比ERROR级别小的日志-->
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>trace</level>
+        </filter>
+        <!-- encoder 预设配置为PatternLayoutEncoder -->
+        <!--定义控制台输出格式-->
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5thread %-5level %logger --- %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="MAIN"/>
+        <appender-ref ref="STDOUT"/>
+    </appender>
+
+    <!--set global log level-->
+    <root level="info">
+        <appender-ref ref="MAIN"/>
+        <appender-ref ref="STDOUT"/>
+    </root>
+
+    <!--set special case log level-->
+    <logger name="tool.util" level="trace"/>
+</configuration>
